@@ -1,11 +1,12 @@
 import sqlite3 from 'sqlite3';
 import { scenariosData } from './scenarios_data.js';
 
-const db = new sqlite3.Database('scaloneta.db', (err) => {
+const dbPath = process.env.VERCEL ? '/tmp/scaloneta.db' : 'scaloneta.db';
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Error al abrir la base de datos SQLite:', err.message);
+    console.error(`Error al abrir la base de datos SQLite (${dbPath}):`, err.message);
   } else {
-    console.log('Conectado a la base de datos SQLite: scaloneta.db');
+    console.log(`Conectado a la base de datos SQLite: ${dbPath}`);
   }
 });
 

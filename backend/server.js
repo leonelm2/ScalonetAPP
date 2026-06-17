@@ -10,11 +10,15 @@ app.use(cors());
 app.use(express.json());
 
 // Inicializar la base de datos al arrancar
-initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Servidor Scaloneta corriendo en http://localhost:${PORT}`);
+if (!process.env.VERCEL) {
+  initDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Servidor Scaloneta corriendo en http://localhost:${PORT}`);
+    });
   });
-});
+} else {
+  initDB();
+}
 
 // --- FUNCIONES HELPER ---
 
@@ -676,3 +680,5 @@ app.post('/api/sandbox/simular', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Error al ejecutar la simulación del sandbox.' });
   }
 });
+
+export default app;
