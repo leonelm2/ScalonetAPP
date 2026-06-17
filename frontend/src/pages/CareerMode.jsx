@@ -4,6 +4,27 @@ import { api } from '../api';
 import Timeline from '../components/Timeline';
 import confetti from 'canvas-confetti';
 
+const getRivalCountry = (partido) => {
+  if (!partido) return '';
+  return partido.equipo_local === 'Argentina' ? partido.equipo_visitante : partido.equipo_local;
+};
+
+const getFlagUrl = (countryName) => {
+  if (!countryName) return '';
+  const cleanName = countryName.toLowerCase().trim();
+  if (cleanName.includes('argentina')) return 'https://flagcdn.com/w40/ar.png';
+  if (cleanName.includes('bajos') || cleanName.includes('neerland') || cleanName.includes('holanda')) return 'https://flagcdn.com/w40/nl.png';
+  if (cleanName.includes('italia')) return 'https://flagcdn.com/w40/it.png';
+  if (cleanName.includes('inglaterra')) return 'https://flagcdn.com/w40/gb-eng.png';
+  if (cleanName.includes('alemania')) return 'https://flagcdn.com/w40/de.png';
+  if (cleanName.includes('rumania')) return 'https://flagcdn.com/w40/ro.png';
+  if (cleanName.includes('suecia')) return 'https://flagcdn.com/w40/se.png';
+  if (cleanName.includes('francia')) return 'https://flagcdn.com/w40/fr.png';
+  if (cleanName.includes('arabia')) return 'https://flagcdn.com/w40/sa.png';
+  if (cleanName.includes('brasil')) return 'https://flagcdn.com/w40/br.png';
+  return '';
+};
+
 export default function CareerMode({ user, onProgressUpdate }) {
   const [escenarios, setEscenarios] = useState([]);
   const [currentEscenarioId, setCurrentEscenarioId] = useState(null);
@@ -388,7 +409,10 @@ export default function CareerMode({ user, onProgressUpdate }) {
                 <div className="p-8 bg-gradient-to-b from-[#111927] to-scaloneta-bg border-b border-scaloneta-border flex flex-col items-center justify-center py-8 text-center">
                   <div className="flex items-center gap-8 sm:gap-14 select-none">
                     <div className="flex flex-col items-center">
-                      <span className="text-sm font-black text-gray-400 uppercase">ARG</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-black text-gray-400 uppercase">ARG</span>
+                        <img src="https://flagcdn.com/w40/ar.png" className="w-5 h-3.5 object-cover rounded-sm shadow-sm" alt="Argentina" />
+                      </div>
                       <span className="text-4xl sm:text-5xl font-black text-white">{esc.marcador.split('-')[0].trim()}</span>
                     </div>
                     <div className="flex flex-col items-center justify-center">
@@ -399,9 +423,14 @@ export default function CareerMode({ user, onProgressUpdate }) {
                       <span className="text-xl font-black text-gray-600">:</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-sm font-black text-gray-400 uppercase">
-                        {esc.partido.equipo_local === 'Argentina' ? esc.partido.equipo_visitante.substring(0, 3).toUpperCase() : esc.partido.equipo_local.substring(0, 3).toUpperCase()}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-black text-gray-400 uppercase">
+                          {esc.partido.equipo_local === 'Argentina' ? esc.partido.equipo_visitante.substring(0, 3).toUpperCase() : esc.partido.equipo_local.substring(0, 3).toUpperCase()}
+                        </span>
+                        {getFlagUrl(getRivalCountry(esc.partido)) && (
+                          <img src={getFlagUrl(getRivalCountry(esc.partido))} className="w-5 h-3.5 object-cover rounded-sm shadow-sm" alt="Rival" />
+                        )}
+                      </div>
                       <span className="text-4xl sm:text-5xl font-black text-white">{esc.marcador.split('-')[1].trim()}</span>
                     </div>
                   </div>
@@ -517,7 +546,10 @@ export default function CareerMode({ user, onProgressUpdate }) {
 
                   <div className="flex items-center gap-8 sm:gap-16 mt-4">
                     <div className="flex flex-col items-center">
-                      <span className="text-sm font-black text-gray-400 uppercase tracking-wider">ARGENTINA</span>
+                      <div className="flex items-center gap-2">
+                        <img src="https://flagcdn.com/w40/ar.png" className="w-6 h-4 object-cover rounded-sm shadow-sm" alt="Argentina" />
+                        <span className="text-sm font-black text-gray-400 uppercase tracking-wider">ARGENTINA</span>
+                      </div>
                       <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg animate-fade-in">
                         {getSimulatedMarcador().argentina}
                       </span>
@@ -532,9 +564,14 @@ export default function CareerMode({ user, onProgressUpdate }) {
                     </div>
 
                     <div className="flex flex-col items-center">
-                      <span className="text-sm font-black text-gray-400 uppercase tracking-wider">
-                        {esc.partido.equipo_local === 'Argentina' ? esc.partido.equipo_visitante.toUpperCase() : esc.partido.equipo_local.toUpperCase()}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-black text-gray-400 uppercase tracking-wider">
+                          {esc.partido.equipo_local === 'Argentina' ? esc.partido.equipo_visitante.toUpperCase() : esc.partido.equipo_local.toUpperCase()}
+                        </span>
+                        {getFlagUrl(getRivalCountry(esc.partido)) && (
+                          <img src={getFlagUrl(getRivalCountry(esc.partido))} className="w-6 h-4 object-cover rounded-sm shadow-sm" alt="Rival" />
+                        )}
+                      </div>
                       <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg animate-fade-in">
                         {getSimulatedMarcador().rival}
                       </span>

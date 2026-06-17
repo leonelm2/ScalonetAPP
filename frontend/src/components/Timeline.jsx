@@ -1,6 +1,26 @@
 import React from 'react';
 import { Lock, Check, Play } from 'lucide-react';
 
+const getRivalCountry = (partido) => {
+  if (!partido) return '';
+  return partido.equipo_local === 'Argentina' ? partido.equipo_visitante : partido.equipo_local;
+};
+const getFlagUrl = (countryName) => {
+  if (!countryName) return '';
+  const cleanName = countryName.toLowerCase().trim();
+  if (cleanName.includes('argentina')) return 'https://flagcdn.com/w40/ar.png';
+  if (cleanName.includes('bajos') || cleanName.includes('neerland') || cleanName.includes('holanda')) return 'https://flagcdn.com/w40/nl.png';
+  if (cleanName.includes('italia')) return 'https://flagcdn.com/w40/it.png';
+  if (cleanName.includes('inglaterra')) return 'https://flagcdn.com/w40/gb-eng.png';
+  if (cleanName.includes('alemania')) return 'https://flagcdn.com/w40/de.png';
+  if (cleanName.includes('rumania')) return 'https://flagcdn.com/w40/ro.png';
+  if (cleanName.includes('suecia')) return 'https://flagcdn.com/w40/se.png';
+  if (cleanName.includes('francia')) return 'https://flagcdn.com/w40/fr.png';
+  if (cleanName.includes('arabia')) return 'https://flagcdn.com/w40/sa.png';
+  if (cleanName.includes('brasil')) return 'https://flagcdn.com/w40/br.png';
+  return '';
+};
+
 export default function Timeline({ escenarios, currentEscenarioId, onSelectEscenario }) {
   return (
     <div className="bg-scaloneta-card border border-scaloneta-border rounded-xl p-5 shadow-lg overflow-hidden">
@@ -83,6 +103,15 @@ export default function Timeline({ escenarios, currentEscenarioId, onSelectEscen
                   <span className="text-[10px] text-gray-400 font-semibold truncate w-full">
                     {esc.fase}
                   </span>
+                  
+                  {/* Matchup with flags! */}
+                  <div className="flex items-center justify-center gap-1.5 mt-2 bg-scaloneta-bg/60 px-2 py-1 rounded-lg border border-scaloneta-border/40 w-full">
+                    <img src="https://flagcdn.com/w40/ar.png" className="w-5 h-3.5 object-cover rounded-sm shadow-sm" alt="Argentina" />
+                    <span className="text-[8px] font-black text-gray-500 uppercase tracking-tighter">vs</span>
+                    {getFlagUrl(getRivalCountry(esc.partido)) && (
+                      <img src={getFlagUrl(getRivalCountry(esc.partido))} className="w-5 h-3.5 object-cover rounded-sm shadow-sm" alt="Rival" />
+                    )}
+                  </div>
                 </button>
               </React.Fragment>
             );
