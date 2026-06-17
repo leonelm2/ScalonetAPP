@@ -249,9 +249,10 @@ export default function CareerMode({ user, onProgressUpdate }) {
     const initialArg = parseInt(initialParts[0]?.trim()) || 0;
     const initialRival = parseInt(initialParts[1]?.trim()) || 0;
 
-    if (isSimulating && tickerComments.length > 0) {
+    if (isSimulating && Array.isArray(tickerComments) && tickerComments.length > 0) {
       for (let i = tickerComments.length - 1; i >= 0; i--) {
         const comment = tickerComments[i];
+        if (!comment || typeof comment !== 'string') continue;
         // Clean out formations like 4-4-2, 4-3-3, 3-3-1-3, 4-4-1-1
         const clean = comment.replace(/\d+-\d+-\d+/g, '').replace(/\d+-\d+-\d+-\d+/g, '');
         const match = clean.match(/(\d+)\s*-\s*(\d+)/);

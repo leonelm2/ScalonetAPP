@@ -3,7 +3,17 @@ import { Trophy, HelpCircle, ShieldAlert, RotateCcw, CheckCircle, Award, Compass
 import { api } from '../api';
 
 export default function Dashboard({ user, onProgressUpdate }) {
-  const [progreso, setProgreso] = useState(null);
+  const [progreso, setProgreso] = useState({
+    completados: 0,
+    totalEscenarios: 0,
+    rango: 'Hincha',
+    total_xp: 0,
+    tactical_xp: 0,
+    strategic_xp: 0,
+    historical_xp: 0,
+    emotional_xp: 0,
+    partidas: []
+  });
   const [ranking, setRanking] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
