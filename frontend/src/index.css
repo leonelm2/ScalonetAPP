@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-scaloneta-bg: #0b0f19;
+  --color-scaloneta-card: #161f30;
+  --color-scaloneta-cardLight: #1e2b42;
+  --color-scaloneta-border: #2a3b5c;
+  --color-scaloneta-accent: #10b981; /* Verde brillante césped */
+  --color-scaloneta-celeste: #38bdf8; /* Celeste Selección */
+  --color-scaloneta-oro: #eab308; /* Dorado copa */
+  --color-scaloneta-danger: #ef4444;
+  --color-scaloneta-textMuted: #94a3b8;
+
+  --font-sports: 'Outfit', 'Inter', sans-serif;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-scaloneta-bg);
+    color: #f3f4f6;
+    font-family: var(--font-sports);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Estilos personalizados para scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e2b42;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3b5c;
+}
+
+/* Efecto de barra de carga animada */
+.glow-effect {
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+.glow-green {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+/* Animación de pulso táctico */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-tactical {
+  animation: heartbeat 2s infinite ease-in-out;
+}
