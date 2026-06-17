@@ -175,6 +175,101 @@ export default function CareerMode({ user, onProgressUpdate }) {
     return false;
   };
 
+  const getFinalScore = (ano, fase, eleccion) => {
+    if (ano === 1978) {
+      return eleccion === 'historica' ? { local: 3, visitante: 1 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 1982) {
+      return eleccion === 'historica' ? { local: 2, visitante: 1 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 1986) {
+      return eleccion === 'historica' ? { local: 2, visitante: 1 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 1990) {
+      return eleccion === 'historica' ? { local: 1, visitante: 0 } : { local: 0, visitante: 1 };
+    }
+    if (ano === 1994) {
+      return eleccion === 'historica' ? { local: 3, visitante: 2 } : { local: 3, visitante: 3 };
+    }
+    if (ano === 1998) {
+      return eleccion === 'historica' ? { local: 2, visitante: 2 } : { local: 2, visitante: 3 };
+    }
+    if (ano === 2002) {
+      return eleccion === 'historica' ? { local: 1, visitante: 1 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 2006) {
+      return eleccion === 'historica' ? { local: 1, visitante: 1 } : { local: 0, visitante: 2 };
+    }
+    if (ano === 2010) {
+      return eleccion === 'historica' ? { local: 0, visitante: 4 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 2014 && fase === 'Semifinal') {
+      return eleccion === 'historica' ? { local: 0, visitante: 0 } : { local: 3, visitante: 2 };
+    }
+    if (ano === 2014 && fase === 'Final') {
+      return eleccion === 'historica' ? { local: 1, visitante: 0 } : { local: 0, visitante: 0 };
+    }
+    if (ano === 2018) {
+      return eleccion === 'historica' ? { local: 4, visitante: 3 } : { local: 1, visitante: 2 };
+    }
+    if (ano === 2022 && fase === 'Grupos') {
+      return eleccion === 'historica' ? { local: 1, visitante: 2 } : { local: 2, visitante: 2 };
+    }
+    if (ano === 2022 && fase === 'Final') {
+      return eleccion === 'historica' ? { local: 3, visitante: 3 } : { local: 2, visitante: 1 };
+    }
+    if (ano === 2026) {
+      return eleccion === 'historica' ? { local: 1, visitante: 2 } : { local: 1, visitante: 2 };
+    }
+    return { local: 0, visitante: 0 };
+  };
+
+  const getSimulatedMarcador = () => {
+    if (!esc) return { argentina: 0, rival: 0 };
+
+    if (simulacionResult) {
+      const isArgLocal = esc.partido.equipo_local === 'Argentina';
+      return {
+        argentina: isArgLocal ? simulacionResult.simulacion.marcadorFinal.local : simulacionResult.simulacion.marcadorFinal.visitante,
+        rival: isArgLocal ? simulacionResult.simulacion.marcadorFinal.visitante : simulacionResult.simulacion.marcadorFinal.local
+      };
+    }
+
+    if (jugadaPrevia) {
+      const finalScore = getFinalScore(esc.ano, esc.partido.fase, jugadaPrevia.eleccion);
+      const isArgLocal = esc.partido.equipo_local === 'Argentina';
+      return {
+        argentina: isArgLocal ? finalScore.local : finalScore.visitante,
+        rival: isArgLocal ? finalScore.visitante : finalScore.local
+      };
+    }
+
+    const initialParts = esc.marcador.split('-');
+    const initialArg = parseInt(initialParts[0]?.trim()) || 0;
+    const initialRival = parseInt(initialParts[1]?.trim()) || 0;
+
+    if (isSimulating && tickerComments.length > 0) {
+      for (let i = tickerComments.length - 1; i >= 0; i--) {
+        const comment = tickerComments[i];
+        const match = comment.match(/(\d+)\s*-\s*(\d+)/);
+        if (match) {
+          const val1 = parseInt(match[1]);
+          const val2 = parseInt(match[2]);
+          const isArgLocal = esc.partido.equipo_local === 'Argentina';
+          return {
+            argentina: isArgLocal ? val1 : val2,
+            rival: isArgLocal ? val2 : val1
+          };
+        }
+      }
+    }
+
+    return {
+      argentina: initialArg,
+      rival: initialRival
+    };
+  };
+
   const isGoodDecision = simulacionResult 
     ? simulacionResult.esCorrecta 
     : (jugadaPrevia ? isWinningChoice(esc.ano, esc.partido.fase, jugadaPrevia.eleccion) : false);
@@ -420,12 +515,8 @@ export default function CareerMode({ user, onProgressUpdate }) {
                   <div className="flex items-center gap-8 sm:gap-16 mt-4">
                     <div className="flex flex-col items-center">
                       <span className="text-sm font-black text-gray-400 uppercase tracking-wider">ARGENTINA</span>
-                      <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg">
-                        {simulacionResult ? (
-                          esc.partido.equipo_local === 'Argentina' ? simulacionResult.simulacion.marcadorFinal.local : simulacionResult.simulacion.marcadorFinal.visitante
-                        ) : (
-                          jugadaPrevia ? getFinalScore(esc.ano, esc.partido.fase, jugadaPrevia.eleccion).local : esc.marcador.split('-')[0].trim()
-                        )}
+                      <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg animate-fade-in">
+                        {getSimulatedMarcador().argentina}
                       </span>
                     </div>
 
@@ -441,12 +532,8 @@ export default function CareerMode({ user, onProgressUpdate }) {
                       <span className="text-sm font-black text-gray-400 uppercase tracking-wider">
                         {esc.partido.equipo_local === 'Argentina' ? esc.partido.equipo_visitante.toUpperCase() : esc.partido.equipo_local.toUpperCase()}
                       </span>
-                      <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg">
-                        {simulacionResult ? (
-                          esc.partido.equipo_local === 'Argentina' ? simulacionResult.simulacion.marcadorFinal.visitante : simulacionResult.simulacion.marcadorFinal.local
-                        ) : (
-                          jugadaPrevia ? getFinalScore(esc.ano, esc.partido.fase, jugadaPrevia.eleccion).visitante : esc.marcador.split('-')[1].trim()
-                        )}
+                      <span className="text-5xl sm:text-6xl font-black text-white mt-1 drop-shadow-lg animate-fade-in">
+                        {getSimulatedMarcador().rival}
                       </span>
                     </div>
                   </div>
