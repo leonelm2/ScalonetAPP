@@ -225,19 +225,20 @@ export default function CareerMode({ user, onProgressUpdate }) {
   };
 
   const getSimulatedMarcador = () => {
-    if (!esc) return { argentina: 0, rival: 0 };
+    if (!esc || !esc.marcador) return { argentina: 0, rival: 0 };
+
+    const isArgLocal = esc.partido?.equipo_local === 'Argentina';
 
     if (simulacionResult) {
-      const isArgLocal = esc.partido.equipo_local === 'Argentina';
+      const finalScore = simulacionResult.simulacion?.marcadorFinal || { local: 0, visitante: 0 };
       return {
-        argentina: isArgLocal ? simulacionResult.simulacion.marcadorFinal.local : simulacionResult.simulacion.marcadorFinal.visitante,
-        rival: isArgLocal ? simulacionResult.simulacion.marcadorFinal.visitante : simulacionResult.simulacion.marcadorFinal.local
+        argentina: isArgLocal ? finalScore.local : finalScore.visitante,
+        rival: isArgLocal ? finalScore.visitante : finalScore.local
       };
     }
 
     if (jugadaPrevia) {
-      const finalScore = getFinalScore(esc.ano, esc.partido.fase, jugadaPrevia.eleccion);
-      const isArgLocal = esc.partido.equipo_local === 'Argentina';
+      const finalScore = getFinalScore(esc.ano, esc.partido?.fase, jugadaPrevia.eleccion) || { local: 0, visitante: 0 };
       return {
         argentina: isArgLocal ? finalScore.local : finalScore.visitante,
         rival: isArgLocal ? finalScore.visitante : finalScore.local
@@ -251,11 +252,12 @@ export default function CareerMode({ user, onProgressUpdate }) {
     if (isSimulating && tickerComments.length > 0) {
       for (let i = tickerComments.length - 1; i >= 0; i--) {
         const comment = tickerComments[i];
-        const match = comment.match(/(\d+)\s*-\s*(\d+)/);
+        // Clean out formations like 4-4-2, 4-3-3, 3-3-1-3, 4-4-1-1
+        const clean = comment.replace(/\d+-\d+-\d+/g, '').replace(/\d+-\d+-\d+-\d+/g, '');
+        const match = clean.match(/(\d+)\s*-\s*(\d+)/);
         if (match) {
           const val1 = parseInt(match[1]);
           const val2 = parseInt(match[2]);
-          const isArgLocal = esc.partido.equipo_local === 'Argentina';
           return {
             argentina: isArgLocal ? val1 : val2,
             rival: isArgLocal ? val2 : val1
