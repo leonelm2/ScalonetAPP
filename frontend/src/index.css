@@ -3,15 +3,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-scaloneta-bg: #0b0f19;
-  --color-scaloneta-card: #161f30;
-  --color-scaloneta-cardLight: #1e2b42;
-  --color-scaloneta-border: #2a3b5c;
-  --color-scaloneta-accent: #10b981; /* Verde brillante césped */
-  --color-scaloneta-celeste: #38bdf8; /* Celeste Selección */
-  --color-scaloneta-oro: #eab308; /* Dorado copa */
+  --color-scaloneta-bg: #051124; /* Azul oscuro nacional */
+  --color-scaloneta-card: #0c1f3d; /* Azul de tarjeta elegante */
+  --color-scaloneta-cardLight: #142f59; /* Azul claro */
+  --color-scaloneta-border: #1e3f70; /* Azul de borde */
+  --color-scaloneta-accent: #ffffff; /* Blanco puro */
+  --color-scaloneta-celeste: #74acdf; /* Celeste oficial AFA */
+  --color-scaloneta-oro: #f6b216; /* Dorado Sol de Mayo */
   --color-scaloneta-danger: #ef4444;
-  --color-scaloneta-textMuted: #94a3b8;
+  --color-scaloneta-textMuted: #8bb2df; /* Texto apagado celeste/gris */
 
   --font-sports: 'Outfit', 'Inter', sans-serif;
 

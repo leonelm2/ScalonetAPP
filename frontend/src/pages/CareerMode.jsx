@@ -332,12 +332,12 @@ export default function CareerMode({ user, onProgressUpdate }) {
                       onClick={() => handleSelectOpcion('historica')}
                       className={`flex flex-col text-left p-6 rounded-2xl border transition-all duration-300 relative focus:outline-none min-h-[150px] ${
                         selectedOpcion === 'historica'
-                          ? 'bg-scaloneta-celeste/5 border-scaloneta-celeste shadow-[0_0_15px_rgba(56,189,248,0.2)] scale-[1.01]'
+                          ? 'bg-scaloneta-celeste/10 border-scaloneta-celeste shadow-[0_0_15px_rgba(116,172,223,0.3)] scale-[1.01]'
                           : 'bg-scaloneta-card border-scaloneta-border hover:border-scaloneta-celeste hover:bg-scaloneta-cardLight cursor-pointer'
                       }`}
                     >
                       <span className="text-[9px] text-scaloneta-celeste font-extrabold uppercase tracking-widest mb-1.5">
-                        Opción A (Histórica)
+                        Opción A
                       </span>
                       <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-2">
                         {opcionA.titulo}
@@ -354,12 +354,12 @@ export default function CareerMode({ user, onProgressUpdate }) {
                       onClick={() => handleSelectOpcion('alternativa')}
                       className={`flex flex-col text-left p-6 rounded-2xl border transition-all duration-300 relative focus:outline-none min-h-[150px] ${
                         selectedOpcion === 'alternativa'
-                          ? 'bg-scaloneta-accent/5 border-scaloneta-accent shadow-[0_0_15px_rgba(16,185,129,0.2)] scale-[1.01]'
+                          ? 'bg-scaloneta-celeste/10 border-scaloneta-celeste shadow-[0_0_15px_rgba(116,172,223,0.3)] scale-[1.01]'
                           : 'bg-scaloneta-card border-scaloneta-border hover:border-scaloneta-celeste hover:bg-scaloneta-cardLight cursor-pointer'
                       }`}
                     >
-                      <span className="text-[9px] text-scaloneta-accent font-extrabold uppercase tracking-widest mb-1.5">
-                        Opción B (Alternativa)
+                      <span className="text-[9px] text-scaloneta-celeste font-extrabold uppercase tracking-widest mb-1.5">
+                        Opción B
                       </span>
                       <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-2">
                         {opcionB.titulo}
